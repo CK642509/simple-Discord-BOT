@@ -26,6 +26,24 @@ async def on_message(message):
 
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
+        
+        # try to record the message in a file
+        try:
+            with open("messages.txt", "a") as f:
+                f.write(f"{message.author}: {message.content}\n")
+        except Exception as e:
+            print(f"Error writing to file: {e}")
+            await message.channel.send("Error writing to file")
+    
+    # add a command to read the messages from the file
+    if message.content.startswith('$read'):
+        try:
+            with open("messages.txt", "r") as f:
+                messages = f.readlines()
+                await message.channel.send("".join(messages))
+        except Exception as e:
+            print(f"Error reading from file: {e}")
+            await message.channel.send("Error reading from file")
 
 
 try:
